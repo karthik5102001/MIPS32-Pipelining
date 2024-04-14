@@ -1,5 +1,5 @@
 
-# MIPS-Processor
+# Verilog Implementation of MIPS32 Pipeline
 
 Exploring more on magic of MIPS
 
