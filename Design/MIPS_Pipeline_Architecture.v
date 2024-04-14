@@ -1,4 +1,4 @@
-module Pipeline_MIPS32(clock_1, clock_2);
+module MIPS32_Pipeline(clock_1, clock_2);
 
 input clock_1, clock_2;
 
@@ -45,7 +45,7 @@ begin
        end                                                        /// INSTRUCTION REGISTER
 end
 else
-     HALTED = 1;                                                  /// ELSE DO HALT OPERATION
+     HALTED <= #3 1;                                                  /// ELSE DO HALT OPERATION
 end
 
 
@@ -75,6 +75,7 @@ begin
       
       endcase
 end	
+else HALTED <= #3  1;
 end
 
 
@@ -124,7 +125,7 @@ if (HALTED == 0)
         EX_MEM_REG_TYPE <= #3 ID_EX_REG_TYPE;                    /// PASS THE TYPE ALSO FOR REFRENCE
         TYPE_BRANCH <= #3 0;                                     /// PUT TYPE_BRANCH AS ZERO 
 end
-else HALTED = 1;
+else HALTED <= #3 1;
 
 end
 
@@ -146,7 +147,7 @@ begin
               MEM_WB_REG_TYPE <= #3 EX_MEM_REG_TYPE;                               /// PASS THE TYPE TO NEXT REG
               MEM_WB_IR <= #3 EX_MEM_IR;                                   /// PASS THE IR TO NEXT REG
          end
-     else  HALTED = 1;    
+     else  HALTED <= #3 1;    
 end
 
 
