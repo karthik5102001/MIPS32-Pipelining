@@ -101,7 +101,7 @@ if (HALTED == 0)
        RI_ALU : case(ID_EX_IR[31:26])                               /// REG TO IMMEDIATE OPERATION
                   
                      ADDI : EX_MEM_ALUOUT <= #3 ID_EX_A + ID_EX_IMM;       /// ADD IMMEDIATE
-                     SUBI : EX_MEM_ALUOUT <= #3 ID_EX_B + ID_EX_IMM;       /// SUB IMMEDIATE
+                     SUBI : EX_MEM_ALUOUT <= #3 ID_EX_B - ID_EX_IMM;       /// SUB IMMEDIATE
                      SLTI : EX_MEM_ALUOUT <= #3 ID_EX_A < ID_EX_IMM;       /// LESS THEN IMMEDIATE
                   default : EX_MEM_ALUOUT <= #3 32'bxxxxxxxx; 
                  
