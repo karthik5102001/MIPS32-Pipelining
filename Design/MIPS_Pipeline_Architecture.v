@@ -101,14 +101,14 @@ if (HALTED == 0)
        RI_ALU : case(ID_EX_IR[31:26])                               /// REG TO IMMEDIATE OPERATION
                   
                      ADDI : EX_MEM_ALUOUT <= #3 ID_EX_A + ID_EX_IMM;       /// ADD IMMEDIATE
-                     SUBI : EX_MEM_ALUOUT <= #3 ID_EX_B + ID_EX_IMM;       /// SUB IMMEDIATE
+                     SUBI : EX_MEM_ALUOUT <= #3 ID_EX_B - ID_EX_IMM;       /// SUB IMMEDIATE
                      SLTI : EX_MEM_ALUOUT <= #3 ID_EX_A < ID_EX_IMM;       /// LESS THEN IMMEDIATE
                   default : EX_MEM_ALUOUT <= #3 32'bxxxxxxxx; 
                  
                 endcase
  
        LOAD,  STORE : begin                                        /// LOAD AND STORE OPERATION
-                     EX_MEM_ALUOUT  <= #3 ID_EX_A + ID_EX_IMM;             /// ADD 'A' WITH IMMEDIATE ADDRESS
+                  EX_MEM_ALUOUT  <= #3 ID_EX_A + ID_EX_IMM;             /// ADD 'A'('A' here is IF_ID_IR[25:21]) WITH IMMEDIATE ADDRESS
                      EX_MEM_B      <= #3 ID_EX_B;                          /// TRANSFER 'B' VALUE TO NEXT REG
                        end
   
@@ -139,9 +139,9 @@ begin
                
                RR_ALU , RI_ALU :  MEM_WB_ALUOUT <= #3 EX_MEM_ALUOUT;       /// IF IT IS RR AND RI PASS VALUE TO ANOTHER REG
                LOAD            :  MEM_WB_LMD    <= #3 MEM[EX_MEM_ALUOUT];  /// LOAD THE VALUE OF MEM AT LOACTION OF ALUOUT
-               STORE           : if(TYPE_BRANCH == 0) MEM[EX_MEM_ALUOUT] <= #3 EX_MEM_B;  // IF TYPE BRANCH IS LOW ONLY WE WRITE INTO MEM
-                                  else     MEM[EX_MEM_ALUOUT] <= #3 MEM[EX_MEM_ALUOUT];   // ELSE OF SYNCHESIS PURPOSE
-               default         : MEM_WB_IR <= #3 EX_MEM_IR;
+                      STORE           : if(TYPE_BRANCH == 0) MEM[EX_MEM_ALUOUT] <= #3 EX_MEM_B;  // IF TYPE BRANCH IS LOW ONLY WE WRITE INTO MEM 
+                      else     MEM[EX_MEM_ALUOUT] <= #3 MEM[EX_MEM_ALUOUT];   // BY 'B'('B' HERE IS IF_ID_IR[20:16]) 
+                      default         : MEM_WB_IR <= #3 EX_MEM_IR;                   //(HERE BOTH DEFAULT AND ELSE FOR SYNCHESIS PURPOSE)
                
              endcase
               MEM_WB_REG_TYPE <= #3 EX_MEM_REG_TYPE;                               /// PASS THE TYPE TO NEXT REG
